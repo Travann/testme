@@ -1,23 +1,52 @@
-import { ClerkProvider } from "@clerk/nextjs";
+import React from "react";
+import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "../globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 
-export const metadata = {
-  title: "Threads",
-  description: "A Next.js 14 Meta Threads Application",
-};
+import "../globals.css";
+import Bottombar from "@/components/shared/Bottombar";
+import Topbar from "@/components/shared/Topbar";
+import RightSiderbar from "@/components/shared/RightSiderbar";
 
 const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+    title: "Threads",
+    description: "A Next.js 13 Meta Threads application",
+};
+
+function LeftSidebar() {
+    return null;
+}
+
 export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
+                                       children,
+                                   }: {
+    children: React.ReactNode;
 }) {
-  return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={`${inter.className} bg-dark-1`}>{children}</body>
-      </html>
-    </ClerkProvider>
-  );
+    return (
+        <ClerkProvider
+            appearance={{
+                baseTheme: dark,
+            }}
+        >
+            <html lang='en'>
+                <body className={inter.className}>
+                    <Topbar />
+
+                    <main className='flex flex-row'>
+                        <LeftSidebar />
+                        <section className='main-container'>
+                            <div className='w-full max-w-4xl'>{children}</div>
+                        </section>
+                        {/* @ts-ignore */}
+                        <RightSiderbar />
+                    </main>
+
+                    <Bottombar />
+                </body>
+            </html>
+        </ClerkProvider>
+    );
 }
